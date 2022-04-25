@@ -1,8 +1,8 @@
-package pcd02;
+package pcd02.interfaces;
 
 import java.util.List;
 
-public interface PackageReport {
+public interface ClassReport {
 
 	String getFullClassName();
 	

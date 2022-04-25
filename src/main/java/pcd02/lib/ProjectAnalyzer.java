@@ -1,6 +1,10 @@
-package pcd02;
+package pcd02.lib;
 
 import io.vertx.core.Future;
+import pcd02.interfaces.ClassReport;
+import pcd02.interfaces.PackageReport;
+import pcd02.interfaces.ProjectElem;
+import pcd02.interfaces.ProjectReport;
 
 import java.util.function.Consumer;
 
@@ -14,6 +18,15 @@ public interface ProjectAnalyzer {
 	 * @return
 	 */
 	Future<ClassReport> getClassReport(String srcClassPath);
+
+	/**
+	 * Async method to retrieve the report about a specific interface,
+	 * given the full path of the interface source file
+	 *
+	 * @param srcInterfacePath
+	 * @return
+	 */
+	Future<ClassReport> getInterfaceReport(String srcInterfacePath);
 
 	/**
 	 * Async method to retrieve the report about a package,
