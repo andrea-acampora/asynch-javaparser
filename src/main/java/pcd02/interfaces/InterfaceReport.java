@@ -8,6 +8,11 @@ public interface InterfaceReport {
 
     String getSrcFullFileName();
 
-    List<MethodInfo> getMethodsInfo();
+    List<String> getMethods();
 
+    void addMethod(String methodName);
+
+    void setFullInterfaceName(String fullInterfaceName);
+
+    void setSrcFullFileName(String srcFullFileName);
 }
