@@ -1,11 +1,9 @@
 package pcd02.lib;
 
 import io.vertx.core.Future;
-import pcd02.interfaces.ClassReport;
-import pcd02.interfaces.PackageReport;
-import pcd02.interfaces.ProjectElem;
-import pcd02.interfaces.ProjectReport;
+import pcd02.interfaces.*;
 
+import java.io.FileNotFoundException;
 import java.util.function.Consumer;
 
 public interface ProjectAnalyzer {
@@ -17,7 +15,7 @@ public interface ProjectAnalyzer {
 	 * @param srcClassPath
 	 * @return
 	 */
-	Future<ClassReport> getClassReport(String srcClassPath);
+	Future<ClassReport> getClassReport(String srcClassPath) throws FileNotFoundException;
 
 	/**
 	 * Async method to retrieve the report about a specific interface,
@@ -26,7 +24,7 @@ public interface ProjectAnalyzer {
 	 * @param srcInterfacePath
 	 * @return
 	 */
-	Future<ClassReport> getInterfaceReport(String srcInterfacePath);
+	Future<InterfaceReport> getInterfaceReport(String srcInterfacePath) throws FileNotFoundException;
 
 	/**
 	 * Async method to retrieve the report about a package,
@@ -35,7 +33,7 @@ public interface ProjectAnalyzer {
 	 * @param srcPackagePath
 	 * @return
 	 */
-	Future<PackageReport> getPackageReport(String srcPackagePath);
+	Future<PackageReport> getPackageReport(String srcPackagePath) throws FileNotFoundException;
 
 	/**
 	 * Async method to retrieve the report about a project
@@ -44,7 +42,7 @@ public interface ProjectAnalyzer {
 	 * @param srcProjectFolderPath
 	 * @return
 	 */
-	Future<ProjectReport> getProjectReport(String srcProjectFolderPath);
+	Future<ProjectReport> getProjectReport(String srcProjectFolderPath) throws FileNotFoundException;
 	
 	/**
 	 * Async function that analyze a project given the full path of the project folder,
