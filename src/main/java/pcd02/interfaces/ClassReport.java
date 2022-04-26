@@ -8,8 +8,15 @@ public interface ClassReport {
 	
 	String getSrcFullFileName();
 
-	List<MethodInfo> getMethodsInfo();
+	List<MethodReport> getMethodsInfo();
 
-	List<FieldInfo> getFieldsInfo();
-	
+	List<FieldReport> getFieldsInfo();
+
+	void setFullClassName(String fullFileName);
+
+	void setSrcFullFileName(String srcFullFilesName);
+
+	void addMethodInfo(MethodReport methodInfo);
+
+	void addFieldInfo(FieldReport fieldInfo);
 }
