@@ -24,7 +24,8 @@ dependencies {
     implementation("com.github.javaparser:javaparser-symbol-solver-core:3.24.2")
 
     // Use JUnit test framework.
-    testImplementation("junit:junit:4.13.2")
+    testImplementation("org.junit.jupiter:junit-jupiter-api:5.8.1")
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.8.1")
 }
 
 application {
