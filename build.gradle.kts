@@ -28,7 +28,6 @@ dependencies {
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.8.1")
 }
 
-application {
-    // Define the main class for the application.
-    mainClass.set("pcd02.app.TestJavaParser")
+tasks.test {
+    useJUnitPlatform()
 }

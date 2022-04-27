@@ -33,7 +33,7 @@ public interface ProjectAnalyzer {
 	 * @param srcPackagePath
 	 * @return
 	 */
-	Future<PackageReport> getPackageReport(String srcPackagePath) throws FileNotFoundException;
+	Future<PackageReport> getPackageReport(String srcPackagePath);
 
 	/**
 	 * Async method to retrieve the report about a project
@@ -42,7 +42,7 @@ public interface ProjectAnalyzer {
 	 * @param srcProjectFolderPath
 	 * @return
 	 */
-	Future<ProjectReport> getProjectReport(String srcProjectFolderPath) throws FileNotFoundException;
+	Future<ProjectReport> getProjectReport(String srcProjectFolderPath);
 	
 	/**
 	 * Async function that analyze a project given the full path of the project folder,
