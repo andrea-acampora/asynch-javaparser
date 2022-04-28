@@ -11,6 +11,7 @@ import java.util.Optional;
 public class PackageReportImpl implements PackageReport {
 
     private String fullPackageName;
+    private String packagePath;
     private final List<InterfaceReport> interfaceReports;
     private final List<ClassReport> classReports;
     private Optional<ClassReport> mainClass;
@@ -23,6 +24,11 @@ public class PackageReportImpl implements PackageReport {
     @Override
     public String getFullPackageName() {
         return this.fullPackageName;
+    }
+
+    @Override
+    public String getFullPackagePath() {
+        return this.packagePath;
     }
 
     @Override
@@ -56,5 +62,10 @@ public class PackageReportImpl implements PackageReport {
         if (classReport.getMethodsInfo().stream().anyMatch(a -> a.getName().equals("main"))) {
             this.mainClass = Optional.of(classReport);
         }
+    }
+
+    @Override
+    public void setPackagePath(String packagePath) {
+        this.packagePath = packagePath;
     }
 }

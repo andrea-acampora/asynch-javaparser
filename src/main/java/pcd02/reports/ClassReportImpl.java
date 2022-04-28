@@ -14,9 +14,8 @@ public class ClassReportImpl implements ClassReport {
     private final List<MethodReport> methodsInfo;
     private final List<FieldReport> fieldsInfo;
 
-    public ClassReportImpl(final String srcFullFileName) {
+    public ClassReportImpl() {
         this.methodsInfo = new LinkedList<>();
-        this.srcFullFileName = srcFullFileName;
         this.fieldsInfo = new LinkedList<>();
     }
 

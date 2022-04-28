@@ -11,9 +11,8 @@ public class InterfaceReportImpl implements InterfaceReport {
     private String fullInterfaceName;
     private final List<String> methods;
 
-    public InterfaceReportImpl(final String srcFullFileName) {
+    public InterfaceReportImpl() {
         this.methods = new LinkedList<>();
-        this.srcFullFileName = srcFullFileName;
     }
 
     @Override
@@ -45,4 +44,5 @@ public class InterfaceReportImpl implements InterfaceReport {
     public void setSrcFullFileName(final String srcFullFileName) {
         this.srcFullFileName = srcFullFileName;
     }
+
 }
