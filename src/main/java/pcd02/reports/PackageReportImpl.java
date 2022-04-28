@@ -68,4 +68,14 @@ public class PackageReportImpl implements PackageReport {
     public void setPackagePath(String packagePath) {
         this.packagePath = packagePath;
     }
+
+    @Override
+    public void setMainClass(Optional<ClassReport> mainClass) {
+        this.mainClass = mainClass;
+    }
+
+    @Override
+    public String toString() {
+        return this.fullPackageName;
+    }
 }

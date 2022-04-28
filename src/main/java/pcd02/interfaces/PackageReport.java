@@ -22,5 +22,6 @@ public interface PackageReport {
 	void addClassInfo(ClassReport classReport);
 
 	void setPackagePath(String packagePath);
-	
+
+	void setMainClass(Optional<ClassReport> mainClass);
 }

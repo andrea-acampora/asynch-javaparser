@@ -25,4 +25,12 @@ public class PackageReportCollector {
             packageReport.addClassInfo(classReport);
         }
     }
+
+    public void searchMainClass(final PackageReport packageReport) {
+        packageReport.setMainClass(packageReport.getClassInfo()
+                                                .stream()
+                                                .filter(report -> report.getMethodsInfo()
+                                                .stream()
+                                                .anyMatch(methodReport -> methodReport.getName().equals("main"))).findFirst());
+    }
 }

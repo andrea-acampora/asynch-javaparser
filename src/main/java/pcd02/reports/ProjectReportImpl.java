@@ -10,7 +10,6 @@ import java.util.Optional;
 
 public class ProjectReportImpl implements ProjectReport {
 
-    private Optional<ClassReport> mainClass;
     private final List<PackageReport> packageReports;
 
     public ProjectReportImpl() {
@@ -31,4 +30,5 @@ public class ProjectReportImpl implements ProjectReport {
     public void addPackageReport(final PackageReport packageReport) {
         this.packageReports.add(packageReport);
     }
+
 }

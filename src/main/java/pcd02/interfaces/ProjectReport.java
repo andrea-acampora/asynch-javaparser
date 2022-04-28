@@ -10,4 +10,5 @@ public interface ProjectReport {
 	List<PackageReport> getAllPackages();
 
 	void addPackageReport(PackageReport packageReport);
+
 }
