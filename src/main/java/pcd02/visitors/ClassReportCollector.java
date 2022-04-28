@@ -23,7 +23,6 @@ public class ClassReportCollector extends VoidVisitorAdapter<ClassReport> {
         methodInfo.setName(md.getNameAsString());
         methodInfo.setType(md.getType().asString());
         methodInfo.setParent(report);
-
         methodInfo.setSrcBeginLine(md.getBegin().get().line);
         methodInfo.setSrcEndLine(md.getEnd().get().line);
         report.addMethodInfo(methodInfo);
