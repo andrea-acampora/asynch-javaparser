@@ -7,6 +7,8 @@ public interface PackageReport {
 
 	String getFullPackageName();
 
+	String getFullPackagePath();
+
 	List<InterfaceReport> getInterfaceInfo();
 
 	List<ClassReport> getClassInfo();
@@ -18,5 +20,7 @@ public interface PackageReport {
 	void addInterfaceInfo(InterfaceReport interfaceReport);
 
 	void addClassInfo(ClassReport classReport);
+
+	void setPackagePath(String packagePath);
 	
 }
