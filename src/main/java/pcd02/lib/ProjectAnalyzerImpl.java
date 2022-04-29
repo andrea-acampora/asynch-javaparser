@@ -70,7 +70,8 @@ public class ProjectAnalyzerImpl implements ProjectAnalyzer {
                 List<CompilationUnit> compilationUnits = sourceRoot.getCompilationUnits();
                 PackageReport packageReport = new PackageReportImpl();
                 packageReport.setPackagePath(srcPackagePath);
-                packageReport.setFullPackageName(compilationUnits.size() > 0 ? compilationUnits.get(0).getPackageDeclaration().get().getNameAsString() : srcPackagePath);
+                packageReport.setFullPackageName(compilationUnits.size() > 0 && compilationUnits.get(0).getPackageDeclaration().isPresent() ?
+                        compilationUnits.get(0).getPackageDeclaration().get().getNameAsString() : srcPackagePath);
                 PackageReportCollector packageReportCollector = new PackageReportCollector();
                 compilationUnits.forEach(cu -> packageReportCollector.visit(cu, packageReport));
                 packageReportCollector.searchMainClass(packageReport);
@@ -101,6 +102,8 @@ public class ProjectAnalyzerImpl implements ProjectAnalyzer {
     }
 
     @Override
-    public void analyzeProject(String srcProjectFolderName, Consumer<ProjectElem> callback) {}
+    public void analyzeProject(String srcProjectFolderName, Consumer<ProjectElem> callback) {
+
+    }
 
 }

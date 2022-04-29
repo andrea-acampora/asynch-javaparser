@@ -11,17 +11,17 @@ import pcd02.reports.InterfaceReportImpl;
 public class PackageReportCollector {
 
     public void visit(CompilationUnit cu, PackageReport packageReport) {
-        if (cu.findFirst(ClassOrInterfaceDeclaration.class).get().isInterface()) {
+        if (cu.findFirst(ClassOrInterfaceDeclaration.class).isPresent() && cu.findFirst(ClassOrInterfaceDeclaration.class).get().isInterface()) {
             InterfaceReportCollector interfaceReportCollector = new InterfaceReportCollector();
             InterfaceReport interfaceReport = new InterfaceReportImpl();
-            interfaceReport.setSrcFullFileName(cu.getPackageDeclaration().get().getNameAsString());
             interfaceReportCollector.visit(cu, interfaceReport);
+            interfaceReport.setSrcFullFileName(packageReport.getFullPackagePath() + interfaceReport.getFullInterfaceName());
             packageReport.addInterfaceInfo(interfaceReport);
         } else {
             ClassReportCollector classReportCollector = new ClassReportCollector();
             ClassReport classReport = new ClassReportImpl();
-            classReport.setSrcFullFileName(cu.getPackageDeclaration().get().getNameAsString());
             classReportCollector.visit(cu, classReport);
+            classReport.setSrcFullFileName(packageReport.getFullPackageName() + classReport.getFullClassName());
             packageReport.addClassInfo(classReport);
         }
     }
