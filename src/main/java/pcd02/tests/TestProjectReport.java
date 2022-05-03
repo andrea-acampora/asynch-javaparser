@@ -1,4 +1,4 @@
-package pcd02.app;
+package pcd02.tests;
 
 import io.vertx.core.Future;
 import io.vertx.core.Vertx;

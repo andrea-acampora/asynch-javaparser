@@ -9,15 +9,12 @@ import pcd02.reports.ClassReportImpl;
 import pcd02.reports.InterfaceReportImpl;
 import pcd02.reports.PackageReportImpl;
 import pcd02.reports.ProjectReportImpl;
-import pcd02.visitors.ClassReportCollector;
-import pcd02.visitors.InterfaceReportCollector;
-import pcd02.visitors.PackageReportCollector;
-import pcd02.visitors.ProjectReportCollector;
+import pcd02.visitors.*;
 
 import java.io.File;
+import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.List;
-import java.util.function.Consumer;
 
 public class ProjectAnalyzerImpl implements ProjectAnalyzer {
 
@@ -102,8 +99,15 @@ public class ProjectAnalyzerImpl implements ProjectAnalyzer {
     }
 
     @Override
-    public void analyzeProject(String srcProjectFolderName, Consumer<ProjectElem> callback) {
-
+    public void analyzeProject(String srcProjectFolderName, String topicAddress) {
+        try {
+            SourceRoot sourceRoot = new SourceRoot(Paths.get(srcProjectFolderName));
+            sourceRoot.tryToParse();
+            List<CompilationUnit> compilationUnits = sourceRoot.getCompilationUnits();
+            ProjectVisitor projectVisitor = new ProjectVisitor(this.vertx, topicAddress);
+            compilationUnits.forEach(cu -> projectVisitor.visit(cu, null));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
-
 }

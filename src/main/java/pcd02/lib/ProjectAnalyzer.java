@@ -4,7 +4,6 @@ import io.vertx.core.Future;
 import pcd02.interfaces.*;
 
 import java.io.FileNotFoundException;
-import java.util.function.Consumer;
 
 public interface ProjectAnalyzer {
 
@@ -49,7 +48,7 @@ public interface ProjectAnalyzer {
 	 * executing the callback each time a project element is found 
 	 * 
 	 * @param srcProjectFolderName The path of the folder of the project.
-	 * @param callback the callback to execute.
+	 * @param topicAddress The address of the topic.
 	 */
-	void analyzeProject(String srcProjectFolderName, Consumer<ProjectElem> callback);
+	void analyzeProject(String srcProjectFolderName, String topicAddress);
 }
