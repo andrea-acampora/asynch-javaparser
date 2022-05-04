@@ -1,10 +1,13 @@
 package pcd02.visitors;
 
+import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.PackageDeclaration;
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
 import com.github.javaparser.ast.body.FieldDeclaration;
 import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.visitor.VoidVisitorAdapter;
+import io.vertx.core.Future;
+import io.vertx.core.Promise;
 import io.vertx.core.Vertx;
 
 import java.util.HashSet;
@@ -20,6 +23,12 @@ public class ProjectVisitor extends VoidVisitorAdapter<Void> {
         this.vertx = vertx;
         this.topicAddress = topicAddress;
         this.packages = new HashSet<>();
+    }
+
+
+    public void visit(CompilationUnit cu, Void collector){
+        super.visit(cu, collector);
+        System.out.println("visiting cu...");
     }
 
     public void visit(PackageDeclaration pd, Void collector) {

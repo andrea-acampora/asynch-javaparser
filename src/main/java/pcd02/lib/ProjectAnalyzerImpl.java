@@ -4,6 +4,7 @@ import com.github.javaparser.StaticJavaParser;
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.utils.SourceRoot;
 import io.vertx.core.*;
+import pcd02.controller.ProjectAnalyzerAgent;
 import pcd02.interfaces.*;
 import pcd02.reports.ClassReportImpl;
 import pcd02.reports.InterfaceReportImpl;
@@ -12,7 +13,6 @@ import pcd02.reports.ProjectReportImpl;
 import pcd02.visitors.*;
 
 import java.io.File;
-import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.List;
 
@@ -100,14 +100,6 @@ public class ProjectAnalyzerImpl implements ProjectAnalyzer {
 
     @Override
     public void analyzeProject(String srcProjectFolderName, String topicAddress) {
-        try {
-            SourceRoot sourceRoot = new SourceRoot(Paths.get(srcProjectFolderName));
-            sourceRoot.tryToParse();
-            List<CompilationUnit> compilationUnits = sourceRoot.getCompilationUnits();
-            ProjectVisitor projectVisitor = new ProjectVisitor(this.vertx, topicAddress);
-            compilationUnits.forEach(cu -> projectVisitor.visit(cu, null));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        this.vertx.deployVerticle(new ProjectAnalyzerAgent(srcProjectFolderName, topicAddress));
     }
 }

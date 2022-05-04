@@ -18,6 +18,7 @@ public class ProjectAnalyzerGUI {
     }
 
     public void start() {
+        System.out.println("start time = " + System.currentTimeMillis());
         SwingUtilities.invokeLater(this.frame::start);
     }
 
@@ -26,7 +27,6 @@ public class ProjectAnalyzerGUI {
     }
 
     public void notifyEvent(Message<Object> message) {
-
         switch (message.body().toString()) {
             case "package":
                 this.frame.panel.incrementPackages();
@@ -61,7 +61,7 @@ public class ProjectAnalyzerGUI {
             this.panel = new VisualiserPanel(w,h);
             this.fileChooser = new JFileChooser();
             fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-            fileChooser.setCurrentDirectory(new java.io.File("."));
+            fileChooser.setCurrentDirectory(new java.io.File(""));
             fileChooser.setDialogTitle("Select a project folder");
 
             this.observers = new LinkedList<>();
@@ -108,6 +108,7 @@ public class ProjectAnalyzerGUI {
         public void actionPerformed(ActionEvent actionEvent) {
             String cmd = actionEvent.getActionCommand();
             if (cmd.equals("start")){
+                System.out.println(fileChooser.getSelectedFile().getAbsolutePath());
                 observers.forEach(obs -> obs.notifyStart(this.fileChooser.getSelectedFile().getAbsolutePath()));
                 this.stopButton.setEnabled(true);
                 this.startButton.setEnabled(false);
@@ -183,23 +184,24 @@ public class ProjectAnalyzerGUI {
         }
 
         public void incrementPackages() {
-            this.numPackages.setText(String.valueOf(Integer.parseInt(this.numPackages.getText()) +1));
+            SwingUtilities.invokeLater(() -> this.numPackages.setText(String.valueOf(Integer.parseInt(this.numPackages.getText()) +1)));
+
         }
 
         public void incrementInterfaces() {
-            this.numInterfaces.setText(String.valueOf(Integer.parseInt(this.numInterfaces.getText()) +1));
+            SwingUtilities.invokeLater(() -> this.numInterfaces.setText(String.valueOf(Integer.parseInt(this.numInterfaces.getText()) +1)));
         }
 
         public void incrementClasses() {
-            this.numClasses.setText(String.valueOf(Integer.parseInt(this.numClasses.getText()) +1));
+            SwingUtilities.invokeLater(() -> this.numClasses.setText(String.valueOf(Integer.parseInt(this.numClasses.getText()) +1)));
         }
 
         public void incrementMethods() {
-            this.numMethods.setText(String.valueOf(Integer.parseInt(this.numMethods.getText()) +1));
+            SwingUtilities.invokeLater(() -> this.numMethods.setText(String.valueOf(Integer.parseInt(this.numMethods.getText()) +1)));
         }
 
         public void incrementFields() {
-            this.numFields.setText(String.valueOf(Integer.parseInt(this.numFields.getText()) +1));
+            SwingUtilities.invokeLater(() -> this.numFields.setText(String.valueOf(Integer.parseInt(this.numFields.getText()) +1)));
         }
     }
 }

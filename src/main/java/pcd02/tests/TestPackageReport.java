@@ -12,7 +12,7 @@ public class TestPackageReport {
     public static void main(String[] args) {
         Vertx vertx = Vertx.vertx();
         ProjectAnalyzer lib = new ProjectAnalyzerImpl(vertx);
-        Future<PackageReport> fut = lib.getPackageReport("src/main/java/pcd02/");
+        Future<PackageReport> fut = lib.getPackageReport("src/");
         fut.onSuccess(res -> {
             System.out.println("Package name: " +  res.getFullPackageName());
             System.out.println("Path: " +  res.getFullPackagePath());

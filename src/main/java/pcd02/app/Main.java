@@ -14,5 +14,6 @@ public class Main {
         View view = new View();
         view.addObserver(controller);
         vertx.deployVerticle(new EventConsumer(view), res -> view.start());
+
     }
 }

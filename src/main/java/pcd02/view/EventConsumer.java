@@ -15,7 +15,20 @@ public class EventConsumer extends AbstractVerticle {
 
     public void start(Promise<Void> startPromise) {
         EventBus eb = this.getVertx().eventBus();
-        eb.consumer("my-topic", view::notifyEvent);
+        eb.consumer("my-topic", ev -> {
+            view.notifyEvent(ev);
+            try {
+                Thread.sleep(1);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        });
+        eb.consumer("stop", ev -> stop());
         startPromise.complete();
+    }
+
+    @Override
+    public void stop(){
+        System.out.println("event consumer stopped");
     }
 }

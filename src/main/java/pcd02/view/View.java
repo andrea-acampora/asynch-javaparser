@@ -3,6 +3,8 @@ package pcd02.view;
 import io.vertx.core.eventbus.Message;
 import pcd02.controller.Observer;
 
+import java.lang.reflect.InvocationTargetException;
+
 
 public class View {
 
@@ -20,7 +22,7 @@ public class View {
         this.gui.start();
     }
 
-    public void notifyEvent(Message<Object> message) {
+    public void notifyEvent(Message<Object> message){
         this.gui.notifyEvent(message);
     }
 }
