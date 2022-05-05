@@ -7,7 +7,6 @@ import com.github.javaparser.ast.body.FieldDeclaration;
 import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.visitor.VoidVisitorAdapter;
 import io.vertx.core.Future;
-import io.vertx.core.Promise;
 import io.vertx.core.Vertx;
 
 import java.util.HashSet;
@@ -27,15 +26,23 @@ public class ProjectVisitor extends VoidVisitorAdapter<Void> {
 
 
     public void visit(CompilationUnit cu, Void collector){
-        super.visit(cu, collector);
-        System.out.println("visiting cu...");
+        log("visiting compilation unit");
+        this.vertx.executeBlocking(promise -> super.visit(cu, collector));
+        log("after visiting compilation unit");
     }
 
     public void visit(PackageDeclaration pd, Void collector) {
-        super.visit(pd, collector);
-        if (this.packages.add(pd.getNameAsString())){
-            this.vertx.eventBus().publish(topicAddress, "package");
-        }
+        log("visiting package declaration");
+        Future<Void> fut = this.vertx.executeBlocking(promise -> {
+            super.visit(pd, collector);
+            promise.complete();
+        });
+        fut.onSuccess(res -> {
+            if (this.packages.add(pd.getNameAsString())) {
+                this.vertx.eventBus().publish(topicAddress, "package");
+            }
+        });
+        log("after visiting package declaration");
     }
 
     public void visit(ClassOrInterfaceDeclaration classOrInterfaceDeclaration, Void collector) {
@@ -56,4 +63,8 @@ public class ProjectVisitor extends VoidVisitorAdapter<Void> {
         super.visit(fd, collector);
         this.vertx.eventBus().publish(topicAddress, "field");
     }
+    private void log(String message) {
+        System.out.println("[ Thread: " + Thread.currentThread().getName() + " ]" + ": " + message);
+    }
+
 }

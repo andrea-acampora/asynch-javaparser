@@ -24,36 +24,25 @@ public class ProjectAnalyzerAgent extends AbstractVerticle {
     public void start(){
         EventBus eb = this.getVertx().eventBus();
         eb.consumer("stop", ev -> stop());
-        System.out.println("started");
-        System.out.println("thread = " + Thread.currentThread().getName());
-        vertx.executeBlocking(promise -> {
             try {
-                System.out.println("thread = " + Thread.currentThread().getName());
+                log("projectAnalyzer started");
                 SourceRoot sourceRoot = new SourceRoot(Paths.get(folderToParse));
-                long time = System.currentTimeMillis();
                 sourceRoot.tryToParse();
-                System.out.println("elapsed = " + (System.currentTimeMillis() - time));
                 List<CompilationUnit> compilationUnits = sourceRoot.getCompilationUnits();
                 ProjectVisitor projectVisitor = new ProjectVisitor(getVertx(), topicAddress);
-                compilationUnits.forEach(cu -> {
-                    System.out.println("before visit cu");
-                    this.vertx.executeBlocking(prom -> {
-                        projectVisitor.visit(cu, null);
-                        prom.complete();
-                    });
-                    System.out.println("after visit cu");
-                });
+                compilationUnits.forEach(cu -> this.vertx.executeBlocking(promise -> projectVisitor.visit(cu, null)));
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            promise.complete();
-        });
-        System.out.println("terminated");
-
+        log("projectAnalyzer finished");
     }
 
     @Override
-    public void stop(){
-        System.out.println("verticle stopped");
+    public void stop() {
+        log("ProjectAnalyzerAgent stopped");
+    }
+
+    private void log(String message) {
+        System.out.println("[ Thread: " + Thread.currentThread().getName() + " ]" + ": " + message);
     }
 }
