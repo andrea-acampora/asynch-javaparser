@@ -8,6 +8,9 @@ import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.visitor.VoidVisitorAdapter;
 import io.vertx.core.Future;
 import io.vertx.core.Vertx;
+import pcd02.interfaces.ProjectElem;
+import pcd02.reports.ElemType;
+import pcd02.reports.ProjectElemImpl;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -25,21 +28,24 @@ public class ProjectVisitor extends VoidVisitorAdapter<Void> {
     }
 
 
-    public void visit(CompilationUnit cu, Void collector){
+    public void visit(CompilationUnit cu, Void collector) {
         log("visiting compilation unit");
         this.vertx.executeBlocking(promise -> super.visit(cu, collector));
         log("after visiting compilation unit");
     }
 
+    // PACKAGE DECLARATION VISIT USING EXECUTE_BLOCKING AND PROJECT ELEM
     public void visit(PackageDeclaration pd, Void collector) {
         log("visiting package declaration");
-        Future<Void> fut = this.vertx.executeBlocking(promise -> {
+        Future<ProjectElem> fut = this.vertx.executeBlocking(promise -> {
             super.visit(pd, collector);
-            promise.complete();
+            ProjectElem projectElem = new ProjectElemImpl();
+            projectElem.setType(ElemType.PACKAGE);
+            promise.complete(projectElem);
         });
         fut.onSuccess(res -> {
             if (this.packages.add(pd.getNameAsString())) {
-                this.vertx.eventBus().publish(topicAddress, "package");
+                this.vertx.eventBus().publish(topicAddress, res);
             }
         });
         log("after visiting package declaration");
@@ -63,8 +69,8 @@ public class ProjectVisitor extends VoidVisitorAdapter<Void> {
         super.visit(fd, collector);
         this.vertx.eventBus().publish(topicAddress, "field");
     }
+
     private void log(String message) {
         System.out.println("[ Thread: " + Thread.currentThread().getName() + " ]" + ": " + message);
     }
-
 }

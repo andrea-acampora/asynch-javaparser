@@ -21,9 +21,9 @@ public class ProjectAnalyzerAgent extends AbstractVerticle {
     }
 
     @Override
-    public void start(){
+    public void start() {
         EventBus eb = this.getVertx().eventBus();
-        eb.consumer("stop", ev -> stop());
+        eb.consumer("stop", ev -> this.vertx.undeploy(this.deploymentID()));
             try {
                 log("projectAnalyzer started");
                 SourceRoot sourceRoot = new SourceRoot(Paths.get(folderToParse));
