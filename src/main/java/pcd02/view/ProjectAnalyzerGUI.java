@@ -60,7 +60,7 @@ public class ProjectAnalyzerGUI {
             this.panel = new VisualiserPanel(w,h);
             this.fileChooser = new JFileChooser();
             fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-            fileChooser.setCurrentDirectory(new java.io.File("."));
+            fileChooser.setCurrentDirectory(new java.io.File(""));
             fileChooser.setDialogTitle("Select a project folder");
 
             this.observers = new LinkedList<>();

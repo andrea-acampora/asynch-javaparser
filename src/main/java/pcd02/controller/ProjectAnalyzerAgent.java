@@ -24,16 +24,18 @@ public class ProjectAnalyzerAgent extends AbstractVerticle {
     public void start() {
         EventBus eb = this.getVertx().eventBus();
         eb.consumer("stop", ev -> this.vertx.undeploy(this.deploymentID()));
+        this.vertx.executeBlocking(promise -> {
             try {
                 log("projectAnalyzer started");
                 SourceRoot sourceRoot = new SourceRoot(Paths.get(folderToParse));
                 sourceRoot.tryToParse();
                 List<CompilationUnit> compilationUnits = sourceRoot.getCompilationUnits();
                 ProjectVisitor projectVisitor = new ProjectVisitor(getVertx(), topicAddress);
-                compilationUnits.forEach(cu -> this.vertx.executeBlocking(promise -> projectVisitor.visit(cu, null)));
+                compilationUnits.forEach(cu -> this.vertx.executeBlocking(prom -> projectVisitor.visit(cu, null)));
             } catch (IOException e) {
                 e.printStackTrace();
             }
+        });
         log("projectAnalyzer finished");
     }
 
