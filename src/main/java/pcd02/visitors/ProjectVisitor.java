@@ -45,7 +45,7 @@ public class ProjectVisitor extends VoidVisitorAdapter<Void> {
         });
         fut.onSuccess(res -> {
             if (this.packages.add(pd.getNameAsString())) {
-                this.vertx.eventBus().publish(topicAddress, res);
+                this.vertx.eventBus().publish(topicAddress, res.getType().toString());
             }
         });
         log("after visiting package declaration");
@@ -53,21 +53,28 @@ public class ProjectVisitor extends VoidVisitorAdapter<Void> {
 
     public void visit(ClassOrInterfaceDeclaration classOrInterfaceDeclaration, Void collector) {
         super.visit(classOrInterfaceDeclaration, collector);
+        ProjectElem projectElem = new ProjectElemImpl();
         if (classOrInterfaceDeclaration.isInterface()) {
-            this.vertx.eventBus().publish(topicAddress, "interface");
+            projectElem.setType(ElemType.INTERFACE);
+            this.vertx.eventBus().publish(topicAddress, projectElem.getType().toString() );
         } else {
-            this.vertx.eventBus().publish(topicAddress, "class");
+            projectElem.setType(ElemType.CLASS);
+            this.vertx.eventBus().publish(topicAddress, projectElem.getType().toString());
         }
     }
 
     public void visit(MethodDeclaration md, Void collector) {
         super.visit(md, collector);
-        this.vertx.eventBus().publish(topicAddress, "method");
+        ProjectElem projectElem = new ProjectElemImpl();
+        projectElem.setType(ElemType.METHOD);
+        this.vertx.eventBus().publish(topicAddress, projectElem.getType().toString());
     }
 
     public void visit(FieldDeclaration fd, Void collector) {
         super.visit(fd, collector);
-        this.vertx.eventBus().publish(topicAddress, "field");
+        ProjectElem projectElem = new ProjectElemImpl();
+        projectElem.setType(ElemType.FIELD);
+        this.vertx.eventBus().publish(topicAddress, projectElem.getType().toString());
     }
 
     private void log(String message) {

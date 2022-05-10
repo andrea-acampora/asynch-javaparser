@@ -1,7 +1,11 @@
 package pcd02.view;
 
+import io.netty.handler.codec.serialization.ObjectEncoder;
 import io.vertx.core.eventbus.Message;
 import pcd02.controller.Observer;
+import pcd02.interfaces.ProjectElem;
+import pcd02.reports.ElemType;
+import pcd02.reports.ProjectElemImpl;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -26,7 +30,7 @@ public class ProjectAnalyzerGUI {
     }
 
     public void notifyEvent(Message<Object> message) {
-        switch (message.body().toString()) {
+        switch ( message.body().toString()) {
             case "package":
                 this.frame.panel.incrementPackages();
                 break;
@@ -128,7 +132,6 @@ public class ProjectAnalyzerGUI {
         private JPanel fieldPanel;
 
         private JLabel packages;
-        private JLabel interfaces;
         private JLabel classes;
         private JLabel methods;
         private JLabel fields;
@@ -149,7 +152,7 @@ public class ProjectAnalyzerGUI {
             add(fieldPanel, BorderLayout.CENTER);
 
             this.packages = new JLabel("Packages: ");
-            this.interfaces = new JLabel("Interfaces: ");
+            JLabel interfaces = new JLabel("Interfaces: ");
             this.classes = new JLabel("Classes: ");
             this.methods = new JLabel("Methods: ");
             this.fields = new JLabel("Fields: ");
@@ -168,7 +171,7 @@ public class ProjectAnalyzerGUI {
             this.numFields = new JLabel("0");
 
             this.packages.setLabelFor(this.numPackages);
-            this.interfaces.setLabelFor(this.numInterfaces);
+            interfaces.setLabelFor(this.numInterfaces);
             this.classes.setLabelFor(this.numClasses);
             this.methods.setLabelFor(this.numMethods);
             this.fields.setLabelFor(this.numFields);
