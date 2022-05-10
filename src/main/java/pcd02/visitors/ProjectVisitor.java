@@ -52,29 +52,38 @@ public class ProjectVisitor extends VoidVisitorAdapter<Void> {
     }
 
     public void visit(ClassOrInterfaceDeclaration classOrInterfaceDeclaration, Void collector) {
-        super.visit(classOrInterfaceDeclaration, collector);
-        ProjectElem projectElem = new ProjectElemImpl();
-        if (classOrInterfaceDeclaration.isInterface()) {
-            projectElem.setType(ElemType.INTERFACE);
-            this.vertx.eventBus().publish(topicAddress, projectElem.getType().toString() );
-        } else {
-            projectElem.setType(ElemType.CLASS);
-            this.vertx.eventBus().publish(topicAddress, projectElem.getType().toString());
-        }
+        Future<ProjectElem> fut = this.vertx.executeBlocking(promise -> {
+            super.visit(classOrInterfaceDeclaration, collector);
+            ProjectElem projectElem = new ProjectElemImpl();
+            if (classOrInterfaceDeclaration.isInterface()) {
+                projectElem.setType(ElemType.INTERFACE);
+            } else {
+                projectElem.setType(ElemType.CLASS);
+            }
+            promise.complete(projectElem);
+        });
+        fut.onSuccess(res -> this.vertx.eventBus().publish(topicAddress, res.getType().toString()));
     }
 
     public void visit(MethodDeclaration md, Void collector) {
-        super.visit(md, collector);
-        ProjectElem projectElem = new ProjectElemImpl();
-        projectElem.setType(ElemType.METHOD);
-        this.vertx.eventBus().publish(topicAddress, projectElem.getType().toString());
+        Future<ProjectElem> fut = this.vertx.executeBlocking(promise -> {
+            super.visit(md, collector);
+            ProjectElem projectElem = new ProjectElemImpl();
+            projectElem.setType(ElemType.METHOD);
+            promise.complete(projectElem);
+        });
+        fut.onSuccess(res -> this.vertx.eventBus().publish(topicAddress, res.getType().toString()));
+
     }
 
     public void visit(FieldDeclaration fd, Void collector) {
-        super.visit(fd, collector);
-        ProjectElem projectElem = new ProjectElemImpl();
-        projectElem.setType(ElemType.FIELD);
-        this.vertx.eventBus().publish(topicAddress, projectElem.getType().toString());
+        Future<ProjectElem> fut = this.vertx.executeBlocking(promise -> {
+            super.visit(fd, collector);
+            ProjectElem projectElem = new ProjectElemImpl();
+            projectElem.setType(ElemType.FIELD);
+            promise.complete(projectElem);
+        });
+        fut.onSuccess(res -> this.vertx.eventBus().publish(topicAddress, res.getType().toString()));
     }
 
     private void log(String message) {
