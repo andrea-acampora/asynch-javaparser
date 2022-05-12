@@ -2,11 +2,6 @@ package pcd02.view;
 
 import io.vertx.core.eventbus.Message;
 import pcd02.controller.Observer;
-import pcd02.interfaces.ProjectElem;
-import pcd02.reports.ProjectElemImpl;
-
-import java.lang.reflect.InvocationTargetException;
-
 
 public class View {
 

@@ -27,16 +27,11 @@ public class ProjectVisitor extends VoidVisitorAdapter<Void> {
         this.packages = new HashSet<>();
     }
 
-
     public void visit(CompilationUnit cu, Void collector) {
-        log("visiting compilation unit");
         this.vertx.executeBlocking(promise -> super.visit(cu, collector));
-        log("after visiting compilation unit");
     }
 
-    // PACKAGE DECLARATION VISIT USING EXECUTE_BLOCKING AND PROJECT ELEM
     public void visit(PackageDeclaration pd, Void collector) {
-        log("visiting package declaration");
         Future<ProjectElem> fut = this.vertx.executeBlocking(promise -> {
             super.visit(pd, collector);
             ProjectElem projectElem = new ProjectElemImpl();
@@ -48,7 +43,6 @@ public class ProjectVisitor extends VoidVisitorAdapter<Void> {
                 this.vertx.eventBus().publish(topicAddress, res.getType().toString());
             }
         });
-        log("after visiting package declaration");
     }
 
     public void visit(ClassOrInterfaceDeclaration classOrInterfaceDeclaration, Void collector) {
@@ -84,9 +78,5 @@ public class ProjectVisitor extends VoidVisitorAdapter<Void> {
             promise.complete(projectElem);
         });
         fut.onSuccess(res -> this.vertx.eventBus().publish(topicAddress, res.getType().toString()));
-    }
-
-    private void log(String message) {
-        System.out.println("[ Thread: " + Thread.currentThread().getName() + " ]" + ": " + message);
     }
 }

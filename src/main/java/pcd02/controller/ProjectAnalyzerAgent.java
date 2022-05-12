@@ -26,7 +26,6 @@ public class ProjectAnalyzerAgent extends AbstractVerticle {
         eb.consumer("stop", ev -> this.vertx.undeploy(this.deploymentID()));
         this.vertx.executeBlocking(promise -> {
             try {
-                log("projectAnalyzer started");
                 SourceRoot sourceRoot = new SourceRoot(Paths.get(folderToParse));
                 sourceRoot.tryToParse();
                 List<CompilationUnit> compilationUnits = sourceRoot.getCompilationUnits();
@@ -36,15 +35,5 @@ public class ProjectAnalyzerAgent extends AbstractVerticle {
                 e.printStackTrace();
             }
         });
-        log("projectAnalyzer finished");
-    }
-
-    @Override
-    public void stop() {
-        log("ProjectAnalyzerAgent stopped");
-    }
-
-    private void log(String message) {
-        System.out.println("[ Thread: " + Thread.currentThread().getName() + " ]" + ": " + message);
     }
 }

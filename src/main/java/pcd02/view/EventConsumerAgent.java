@@ -17,13 +17,4 @@ public class EventConsumerAgent extends AbstractVerticle {
         eb.consumer("my-topic", view::notifyEvent);
         startPromise.complete();
     }
-
-    @Override
-    public void stop() {
-        log("EventConsumerAgent stopped");
-    }
-
-    private void log(String message) {
-        System.out.println("[ Thread: " + Thread.currentThread().getName() + " ]" + ": " + message);
-    }
 }
